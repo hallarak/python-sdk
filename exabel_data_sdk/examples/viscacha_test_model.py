@@ -1,7 +1,7 @@
 import argparse
 import sys
 import pandas as pd
-from typing import Sequence
+from typing import List, Sequence
 from dateutil import tz
 
 from exabel_data_sdk import ExabelClient
@@ -138,13 +138,13 @@ class SetupTestCase(BaseScript):
         # except:
         #     print(f"could not remove signal - does not exist")
 
-    def load_signals(self, client: ExabelClient, args: argparse.Namespace, signal_setup: dict):
+    def load_signals(self, client: ExabelClient, args: argparse.Namespace, signal_setup: List):
         for signal in signal_setup:
             signal_name = f"entityTypes/brand_and_item/entities/{args.namespace}." \
                           + signal["brand"].lower() \
                           + "-" \
                           + signal["item_type"].lower() \
-                          + f"/{args.namespace}." + signal["signal"]
+                          + f"/signals/{args.namespace}." + signal["signal"]
             print(f"signal_name :" + signal_name)
             client.time_series_api.create_time_series(
                 signal_name,
@@ -156,6 +156,10 @@ class SetupTestCase(BaseScript):
             print(signal)
 
     def run_script(self, client: ExabelClient, args: argparse.Namespace) -> None:
+
+        """
+        python -m viscacha_test_model --api-key <API-KEY> --exabel-api-host data.api-test.exabel.com --namespace test --teardown
+        """
 
         companies_setup = {"Nestle": {"isin": "CH0038863350",
                                       "brands": [
@@ -251,8 +255,6 @@ class SetupTestCase(BaseScript):
                             args.namespace,
                             brand_entity, brand_name,
                             item_type, has_item_type)
-
-        self.load_signals(signal_setup)
 
         # need some signals
         # Add a signal.
