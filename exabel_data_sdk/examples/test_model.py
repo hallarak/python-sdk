@@ -218,17 +218,16 @@ class SetupTestCase(BaseScript):
                           + "-" \
                           + signal["item_type"].lower() \
                           + f"/signals/{args.namespace}." + signal["signal"]
-            print(f"signal_name :" + signal_name)
             series = pd.Series(
                 signal["values"],
                 signal["dates"]
             )
             if not client.time_series_api.time_series_exists(signal_name):
               client.time_series_api.create_time_series(signal_name, series)
-              print(f"created signal for {signal}")
+              print(f"created signal {signal_name}")
             else:
-              client.time_series_api.append_time_series_data(signal_name, series)
-              print(f"appended signal for {signal}")
+              client.time_series_api.upsert_time_series(signal_name, series)
+              print(f"upserted signal for {signal_name}")
 
     def run_script(self, client: ExabelClient, args: argparse.Namespace) -> None:
 
