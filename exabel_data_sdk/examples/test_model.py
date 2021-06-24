@@ -78,7 +78,6 @@ class SetupTestCase(BaseScript):
         item_type: str,
         relationship_type: RelationshipType
     ) -> Entity:
-
         brand_item_type_name = f"entityTypes/brand_and_item/entities/" \
                                f"{namespace}.{brand_name.lower()}-{item_type.lower()}"
         brand_item_type_entity = client.entity_api.get_entity(brand_item_type_name)
@@ -228,7 +227,7 @@ class SetupTestCase(BaseScript):
               client.time_series_api.create_time_series(signal_name, series)
               print(f"created signal for {signal}")
             else:
-              client.time_series_api.append_time_series_data(series)
+              client.time_series_api.append_time_series_data(signal_name, series)
               print(f"appended signal for {signal}")
 
     def run_script(self, client: ExabelClient, args: argparse.Namespace) -> None:
@@ -279,27 +278,40 @@ class SetupTestCase(BaseScript):
         signal_setup = [{"signal": "viscacha_signal1",
                          "brand": "Disney",
                          "item_type": "Movies",
-                         "values": [1, 2],
-                         "dates": pd.DatetimeIndex(["2021-01-01", "2021-01-02"], tz=tz.tzutc()),
+                         "values": [1, 2, 10, 11, 12],
+                         "dates": pd.DatetimeIndex(["2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05"], tz=tz.tzutc()),
                         },
                         {"signal": "viscacha_signal2",
                          "brand": "Disney",
                          "item_type": "Movies",
-                         "values": [3, 4],
-                         "dates": pd.DatetimeIndex(["2021-01-01", "2021-01-02"], tz=tz.tzutc()),
+                         "values": [3, 4, 13, 14, 15],
+                         "dates": pd.DatetimeIndex(["2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05"], tz=tz.tzutc()),
                          },
                         {"signal": "viscacha_signal1",
                          "brand": "Disney",
                          "item_type": "Jewelry",
-                         "values": [5, 6],
-                         "dates": pd.DatetimeIndex(["2021-01-01", "2021-01-02"], tz=tz.tzutc()),
+                         "values": [5, 6, 16, 17, 18],
+                         "dates": pd.DatetimeIndex(["2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05"], tz=tz.tzutc()),
                          },
                          {"signal": "viscacha_signal2",
                          "brand": "Disney",
                          "item_type": "Jewelry",
-                         "values": [7, 8],
-                         "dates": pd.DatetimeIndex(["2021-01-01", "2021-01-02"], tz=tz.tzutc()),
-                         }]
+                         "values": [7, 8, 19, 20, 21],
+                         "dates": pd.DatetimeIndex(["2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05"], tz=tz.tzutc()),
+                         },
+                        {"signal": "viscacha_signal1",
+                         "brand": "Mickey_Mouse",
+                         "item_type": "Accessories",
+                         "values": [9, 10, 29, 30, 31],
+                         "dates": pd.DatetimeIndex(["2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05"], tz=tz.tzutc()),
+                         },
+                        {"signal": "viscacha_signal2",
+                         "brand": "Mickey_Mouse",
+                         "item_type": "Accessories",
+                         "values": [100, 101, 102, 103, 104],
+                         "dates": pd.DatetimeIndex(["2021-01-01", "2021-01-02", "2021-01-03", "2021-01-04", "2021-01-05"], tz=tz.tzutc()),
+                         },
+                        ]
 
         self.cleanup(client, args, companies_setup, product_item_setup)
 
